@@ -1,8 +1,8 @@
 package com.opdevinit.rest_api_dio.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -19,15 +19,27 @@ public class Account {
     private String accountNumber;
 
     @NotNull
-    @Column(precision = 10, scale = 2)
+    @DecimalMin("0.00")
     private BigDecimal balance;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private User user;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Transaction> transactions;
+
+    public Account(Long id, String accountNumber, BigDecimal balance, List<Transaction> transactions) {
+        this.id = id;
+        this.accountNumber = accountNumber;
+        this.balance = balance; 
+        this.transactions = transactions;
+    }
+   
+    public Account( String accountNumber, BigDecimal balance) {
+        this.accountNumber = accountNumber;
+        this.balance = balance;
+    }
+
+    public Account() {
+    }
 
     // Getters e Setters
     public Long getId() {
@@ -52,14 +64,6 @@ public class Account {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public List<Transaction> getTransactions() {

@@ -1,5 +1,7 @@
 package com.opdevinit.rest_api_dio.model;
 
+import com.opdevinit.rest_api_dio.DTO.UserSaveDTO;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -16,8 +18,25 @@ public class User {
     @Column(unique = true, length = 100)
     private String email;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn()
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Account account;
+
+    public User(Long id, String name, String email, Account account) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.account = account;
+    }
+    
+    public User(UserSaveDTO user, Account account) {
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.account = account;
+    }
+
+    public User() {
+    }
 
     // Getters e Setters
     public Long getId() {

@@ -6,12 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.opdevinit.rest_api_dio.model.Transaction;
-import com.opdevinit.rest_api_dio.model.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    
-    User findByEmail(String email);
+public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    List<Transaction> findAllByEmail(String email);
+    
 }

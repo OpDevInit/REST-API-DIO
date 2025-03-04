@@ -2,7 +2,6 @@ package com.opdevinit.rest_api_dio.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,24 +14,23 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @DecimalMin(value = "0.1")
+    @DecimalMin(value = "0.0")
     @Column(precision = 10, scale = 2)
     private BigDecimal amount;
 
-    @NotNull
     private LocalDateTime timestamp;
 
-    @ManyToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
-    private Account account;
+    
 
-    // Construtor para definir o timestamp automaticamente
     public Transaction() {
-        this.timestamp = LocalDateTime.now();
     }
 
-    // Getters e Setters
+    public Transaction(BigDecimal amount, LocalDateTime timestamp ) {
+
+        this.amount = amount;
+        this.timestamp = timestamp;
+    }
+
     public Long getId() {
         return id;
     }
@@ -57,11 +55,6 @@ public class Transaction {
         this.timestamp = timestamp;
     }
 
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
+   
+    
 }
